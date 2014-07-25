@@ -1,5 +1,5 @@
-var dewisApp = angular.module('dewis', [])
-  .controller('login', ['$scope', '$http', function($scope, $http){
+var dewisApp = angular.module('dewis', ['ngRoute'])
+  .controller('loginCtrl', ['$scope', '$http', function($scope, $http){
     $scope.data = {
       status: 'Hello World'
     };
@@ -22,4 +22,32 @@ var dewisApp = angular.module('dewis', [])
         console.log(data);
       });
     }
+  }])
+  .controller('timelineCtrl', ['$scope', '$http', function($scope, $http){
+    $scope.json = {
+      status: "ok",
+      curUser: "James",
+      data: {
+          messages : {
+            message1 : {
+              user: "James",
+              content: "Wow it works"
+            },
+            message2 : {
+              user: "Thiago",
+              content: "Yes it does, Hello World!"
+            },
+            message3 : {
+              user: "Liam",
+              content: "This is cool!"
+            }
+          }
+        }
+    };
+  }])
+  .config(['$routeProvider', function($routeProvider){
+    $routeProvider
+      .when("/timeline", {templateUrl: "partials/timeline.html", controller: "timelineCtrl"})
+      .when("/login", {templateUrl: "partials/login.html", controller: "loginCtrl"})
+      .otherwise({redirectTo: '/'});
   }]);

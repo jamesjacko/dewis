@@ -1,0 +1,6 @@
+<h1>Time Line</h1>
+<div id="timeline" ng-show="json.status == 'ok'">
+  <div class="timeline-message" ng-repeat="message in json.data.messages" ng-class="{true:'owner', false:''}[message.user == json.curUser]"><h2>{{message.user}}</h2>
+    <p>{{message.content}}</p>
+  </div>
+</div>
