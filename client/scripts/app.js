@@ -1,8 +1,7 @@
 var dewisApp = angular.module('dewis', [])
   .controller('login', ['$scope', '$http', function($scope, $http){
     $scope.data = {
-      username: 'username',
-      password: 'password'
+      status: 'Hello World'
     };
     $scope.login = function(){
       console.log($scope.data);
@@ -16,7 +15,7 @@ var dewisApp = angular.module('dewis', [])
       console.log(dataString);
       $http({
         method: 'post',
-        url: 'login.php',
+        url: '/test.go',
         data: dataString,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       }).success(function(data){
