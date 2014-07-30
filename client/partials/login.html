@@ -1,5 +1,5 @@
 <h1>Login</h1>
-    <form method="post" ng-submit="login()">
+    <form method="post">
         Username:<br />
         <input type="text" name="username" value="<?php echo $submitted_username; ?>" ng-model="data.username" />
         <br /><br />
@@ -8,3 +8,5 @@
         <br /><br />
         <input type="submit" value="Login" />
     </form>
+
+		<a href="#" ng-click="login()">Send Message</a>

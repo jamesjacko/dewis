@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html ng-app="dewis">
   <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
+    <script src="scripts/angular.js"></script>
+    <script src="scripts/angular-route.js"></script>
     <script src="scripts/app.js"></script>
-    <style>
-      .owner{
-        background: #CCC;
-      }
-    </style>
-  </head>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
   <body>
-    
-    <ng-view></ng-view>
+    <h1 class="header">DEWIS</h1>
+		<div class="page">
+    	<a href="#/login/">Login</a> - <a href="#/timeline/">Timeline</a>    
+    	<ng-view></ng-view>
+		</div>
   </body>
 </html>

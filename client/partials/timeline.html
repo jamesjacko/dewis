@@ -1,6 +1,12 @@
 <h1>Time Line</h1>
 <div id="timeline" ng-show="json.status == 'ok'">
-  <div class="timeline-message" ng-repeat="message in json.data.messages" ng-class="{true:'owner', false:''}[message.user == json.curUser]"><h2>{{message.user}}</h2>
-    <p>{{message.content}}</p>
+  <div class="timeline-message" ng-repeat="message in json.data.messages" ng-class="{true:'owner', false:''}[message.user == json.curUser]">
+      <p class="title">
+          <img ng-src="{{users.data.users[message.user].avatar}}" class="profile-pic" />{{message.user}}
+          <br />
+          <span class="message-meta">{{message.time * 1000 | date : 'd MMM, y HH:mm:ss'}}</span>
+      </p>
+     <p>{{message.content}}</p>
   </div>
+  <textarea placeholder="Add message to the timeline" class="add-msg" ng-enter="addMessage()" ng-model="newMessage"></textarea>
 </div>
