@@ -19,14 +19,22 @@ body{
   padding:20px;
   background:#E9EAED;
 }
-.timeline-message{
-  margin:30px 100px 30px -20px;
+#timeline{
+  overflow:hidden;
+}
+.timeline-record{
+  width:450px;
   border:1px solid #DEDEDE;
   border-bottom:2px solid #CCC;
   padding:10px;
+  margin:0 10px;
   background: #FFF;
+  float:left;
 }
-.timeline-message .title{
+.timeline-record:nth-child(odd){
+  float:right;
+}
+.timeline-record .title{
   font-size: 1em;
   font-weight: bold;
   height:50px;
@@ -34,18 +42,15 @@ body{
   margin: 0;
   overflow: hidden;
 }
-.timeline-message .profile-pic{
+.timeline-record .profile-pic{
   float:left;
   margin:0 10px 0 0;
   width:50px;
 }
-.timeline-message .message-meta{
+.timeline-record .record-meta{
   font-size: 0.8em;
   color: #666;
   font-weight: normal;
-}
-.timeline-message.owner{
-  margin:20px -20px 20px 100px;
 }
 .add-msg{
   display: block;
@@ -57,4 +62,5 @@ body{
   font: normal 1em "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
   padding:10px;
   border:1px solid #DEDEDE;
+  margin-top:20px;
 }

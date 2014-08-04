@@ -5,7 +5,6 @@ var dewisApp = angular.module('dewis', ['ngRoute'])
       status: 'HelloWorld'
     };
     $scope.login = function(){
-//      console.log($scope.data);
       var dataString = "";
       for (var key in $scope.data) {
           if (dataString != "") {
@@ -18,15 +17,16 @@ var dewisApp = angular.module('dewis', ['ngRoute'])
         method: 'post',
         url: '/api',
         data: dataString,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        headers: {'Content-Type': 'application/json'}
       }).success(function(data){
         console.log(data.Data);
       }).error(function(data, status, headers, config){
         console.log(data, status, headers, config);
       });
     }
-  }])
+    }])
   .controller('timelineCtrl', ['$scope', '$http', function($scope, $http){
+    $scope.curUser = "53dbafcff66029358cd113a1";
     Object.size = function(obj) {
       var size = 0, key;
       for (key in obj) {
@@ -35,44 +35,28 @@ var dewisApp = angular.module('dewis', ['ngRoute'])
       }
       return size;
     };
-    $scope.json = {
-      status: "ok",
-      curUser: "James",
-      data: {
-          messages : {
-            message1 : {
-              user: "James",
-              content: "Wow it works",
-              time: "1406717220000"
-            },
-            message2 : {
-              user: "Thiago",
-              content: "Yes it does, Hello World!",
-              time: "1406717220000"
-            },
-            message3 : {
-              user: "Liam",
-              content: "This is cool!",
-              time: "1406716967000"
-            },
-            message4 : {
-              user: "James",
-              content: "Wow it works",
-              time: "1406717220000"
-            },
-            message5 : {
-              user: "Thiago",
-              content: "Yes it does, Hello World!",
-              time: "1406717220000"
-            },
-            message6 : {
-              user: "James",
-              content: "This is cool!",
-              time: "1406716967000"
-            }
-          }
-        }
+
+    $scope.data = {
+      Request: 'Timeline',
+      Action: 'GetRecords',
+      Data: {
+        Quantity: '0'
+      }
     };
+
+
+    $http({
+      method: 'post',
+      url: '/api',
+      data: $scope.data,
+      headers: {'Content-Type': 'application/json'}
+    }).success(function(data){
+      $scope.json = data;
+      console.log(data);
+    }).error(function(data, status, headers, config){
+      console.log(status);
+    });
+
     $scope.users = {
       status: "ok",
       data: {
@@ -89,16 +73,46 @@ var dewisApp = angular.module('dewis', ['ngRoute'])
         }
       }
     }
-    $scope.addMessage = function(){
-      var newName = "message" + Object.size($scope.json.data.messages) + 1;
-      $scope.json.data.messages[newName] = { };
-      $scope.json.data.messages[newName].user = $scope.json.curUser;
-      $scope.json.data.messages[newName].content = $scope.newMessage;
-      $scope.json.data.messages[newName].time = new Date().getTime();
-      $scope.newMessage = "";
-      console.log($scope.json.data.messages);
+
+
+    $scope.addRecord = function(){
+
+      var record = {
+        Request: "Timeline",
+        Action: "AddRecord",
+        Data: {
+          User: $scope.curUser,
+          Content: $scope.newRecord
+        }
+      }
+
+      
+
+      console.log(record);
+      $http({
+        method: 'post',
+        url: '/api',
+        data: record,
+        headers: {'Content-Type': 'application/json'}
+      }).success(function(data){
+        //$scope.json = data;
+        console.log(data);
+      }).error(function(data, status, headers, config){
+        console.log(status);
+      });
+
+
+      var newName = "record" + Object.size($scope.json.Records) + 1;
+      var newOne = {
+        User: $scope.curUser,
+        Content: $scope.newRecord,
+        Time: new Date().getTime()
+      }
+      if($scope.json.Records == null) $scope.json.Records = Array();
+      $scope.json.Records.push(newOne);
+      $scope.newRecord = "";
     };
-    $scope.getMoreMessages = function(){
+    $scope.getMoreRecords = function(){
       alert("hello");
     };
   }])
