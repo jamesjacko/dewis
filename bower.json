@@ -1,0 +1,12 @@
+{
+  "name": "dewis",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jamesjacko/dewis",
+  "authors": [
+    "jamesjacko <james.ogge@gmail.com>"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT"
+}
