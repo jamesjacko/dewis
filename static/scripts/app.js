@@ -68,7 +68,7 @@ module.exports = function($scope, $http, GetData){
     'Timeline', 
     'GetRecords', 
     {
-      Quantity: 0
+      Quantity: "0"
     }
   );
 
@@ -146,19 +146,22 @@ module.exports = function () {
   };
 };
 },{}],6:[function(require,module,exports){
-module.exports= function(){
+module.exports= function($http){
   
   function fetch(req, act, data){
     var json = null;
+
     var requestObj = {
       Request: req,
       Action: act,
       Data: data
     };
+
+    console.log(requestObj);
     $http({
       method: 'post',
       url: '/api',
-      data: obj,
+      data: requestObj,
       headers: {'Content-Type': 'application/json'}
     }).success(function(data){
       json = data;

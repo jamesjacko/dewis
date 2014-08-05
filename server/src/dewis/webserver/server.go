@@ -15,9 +15,9 @@ func main() {
 	}
  
 	if len(args) == 1 && args[0] == "run" {
-		fmt.Println("Starting server")
+		fmt.Println("Starting server test")
 		http.HandleFunc("/api", features.ApiHandler)
-		http.Handle("/", http.FileServer(http.Dir("/var/develop/dewis/client")))
+		http.Handle("/", http.FileServer(http.Dir("/var/develop/dewis/static/")))
 		fmt.Println("Server running...")
     	http.ListenAndServe(":8080", nil)
 	} else {

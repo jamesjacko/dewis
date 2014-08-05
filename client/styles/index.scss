@@ -1,23 +1,51 @@
 body{
-  margin:20px; 
+  margin:0; 
   padding:0;
-  background:url('./images/escheresque_ste_@2X.png') repeat;
+  background:#E9EAED;
   background-size: 46px 29px;
   font: normal 62.5%/1.5 "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
 }
 .header{
-  color: #DEDEDE;
-  text-align:center;
-  font: 100 3em 'Lato', sans-seif;
+  background: #1C556B;
+  overflow:hidden;
+}
+.header-logo{
+  color: #FFF;
+  font-size:1.8em;
+  line-height:50px;
+  float:left;
+  margin:0;
+  padding:0 0 0 20px;
+  font-weight:normal;
 }
 .page{
-  width:1000px;
   margin:0 auto;
-  background:#FFF;
-  box-shadow: 2px 2px 2px #000;
   font-size:1.2em;
   padding:20px;
   background:#E9EAED;
+}
+.nav{
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  height:50px;
+  line-height:50px;
+  float:right;
+  font-size:1.2em;
+}
+.nav li{
+  display:inline-block;
+  float:left;
+}
+.nav li a{
+  color:#FFF;
+  text-decoration:none;
+  font-weight:bold;
+  display:block;
+  padding:0 10px;
+}
+.nav li:hover a{
+  background:#083242;
 }
 #timeline{
   overflow:hidden;

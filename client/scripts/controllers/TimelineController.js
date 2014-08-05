@@ -13,7 +13,7 @@ module.exports = function($scope, $http, GetData){
     'Timeline', 
     'GetRecords', 
     {
-      Quantity: 0
+      Quantity: "0"
     }
   );
 
