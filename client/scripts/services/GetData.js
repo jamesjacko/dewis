@@ -9,20 +9,13 @@ module.exports= function($http){
       Data: data
     };
 
-    console.log(requestObj);
-    $http({
+    //console.log(requestObj);
+    return $http({
       method: 'post',
       url: '/api',
       data: requestObj,
       headers: {'Content-Type': 'application/json'}
-    }).success(function(data){
-      json = data;
-    }).error(function(data, status, headers, config){
-      json = {
-        status: false
-      }
     });
-    return json;
   }
 
   return{

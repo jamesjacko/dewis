@@ -9,13 +9,25 @@ module.exports = function($scope, $http, GetData){
     return size;
   };
 
+
+
   $scope.json = GetData.fetch(
     'Timeline', 
     'GetRecords', 
     {
       Quantity: "0"
     }
-  );
+  ).success(function(dataReturned){
+      $scope.json = dataReturned;
+    });
+
+  if($scope.json == null){
+    $scope.json = {
+      Status: true,
+      Records: Array()
+    }
+  }
+  console.log($scope.json);
 
   $scope.users = {
     status: "ok",
@@ -39,22 +51,22 @@ module.exports = function($scope, $http, GetData){
 
     $scope.added = GetData.fetch(
       'Timeline', 
-      'GetRecords', 
+      'AddRecord', 
       {
         User: $scope.curUser,
         Content: $scope.newRecord
       }
-    );
-
-    var newName = "record" + Object.size($scope.json.Records) + 1;
-    var newOne = {
-      User: $scope.curUser,
-      Content: $scope.newRecord,
-      Time: new Date().getTime()
-    }
-    if($scope.json.Records == null) $scope.json.Records = Array();
-    $scope.json.Records.push(newOne);
-    $scope.newRecord = "";
+    ).success(function(data){
+      var newName = "record" + Object.size($scope.json.Records) + 1;
+      var newOne = {
+        User: $scope.curUser,
+        Content: $scope.newRecord,
+        Time: new Date().getTime()
+      }
+      if($scope.json.Records == null) $scope.json.Records = Array();
+      $scope.json.Records.push(newOne);
+      $scope.newRecord = "";
+    });
   };
   $scope.getMoreRecords = function(){
     alert("hello");
