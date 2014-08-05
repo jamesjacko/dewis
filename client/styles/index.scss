@@ -1,0 +1,66 @@
+body{
+  margin:20px; 
+  padding:0;
+  background:url('./images/escheresque_ste_@2X.png') repeat;
+  background-size: 46px 29px;
+  font: normal 62.5%/1.5 "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+}
+.header{
+  color: #DEDEDE;
+  text-align:center;
+  font: 100 3em 'Lato', sans-seif;
+}
+.page{
+  width:1000px;
+  margin:0 auto;
+  background:#FFF;
+  box-shadow: 2px 2px 2px #000;
+  font-size:1.2em;
+  padding:20px;
+  background:#E9EAED;
+}
+#timeline{
+  overflow:hidden;
+}
+.timeline-record{
+  width:450px;
+  border:1px solid #DEDEDE;
+  border-bottom:2px solid #CCC;
+  padding:10px;
+  margin:0 10px;
+  background: #FFF;
+  float:left;
+}
+.timeline-record:nth-child(odd){
+  float:right;
+}
+.timeline-record .title{
+  font-size: 1em;
+  font-weight: bold;
+  height:50px;
+  line-height: 15px;
+  margin: 0;
+  overflow: hidden;
+}
+.timeline-record .profile-pic{
+  float:left;
+  margin:0 10px 0 0;
+  width:50px;
+}
+.timeline-record .record-meta{
+  font-size: 0.8em;
+  color: #666;
+  font-weight: normal;
+}
+.add-msg{
+  display: block;
+  width:auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width:100%;
+  font: normal 1em "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+  padding:10px;
+  border:1px solid #DEDEDE;
+  margin-top:20px;
+}

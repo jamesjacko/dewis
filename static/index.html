@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html ng-app='dewis'>
+	<head>
+    <link rel="stylesheet" type="text/css" href="styles/index.css" />
+    <script type="text/css" src="vendor/angular/angular.min.js"></script>
+    <script type="text/css" src="vendor/angular-route/angular-route.min.js"></script>
+    <script type="text/css" src="scripts/app.js"></script>
+	</head>	
+	<body>
+    <h1 class="header">DEWIS</h1>
+    <div class="page">
+      <a href="#/login/">Login</a> - <a href="#/timeline/">Timeline</a>    
+      <ng-view></ng-view>
+    </div>
+	</body>
+</html>
