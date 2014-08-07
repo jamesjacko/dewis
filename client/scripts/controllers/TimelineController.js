@@ -18,8 +18,9 @@ module.exports = function($scope, $http, GetData){
       Quantity: "0"
     }
   ).success(function(dataReturned){
+      console.log(dataReturned);
       $scope.json = dataReturned;
-    });
+  });
 
   if($scope.json == null){
     $scope.json = {
@@ -27,7 +28,7 @@ module.exports = function($scope, $http, GetData){
       Records: Array()
     }
   }
-  console.log($scope.json);
+  //console.log($scope.json);
 
   $scope.users = {
     status: "ok",

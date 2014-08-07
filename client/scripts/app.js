@@ -5,13 +5,15 @@ angular.module('dewis', ['ngRoute'])
     $routeProvider
       .when("/timeline", {templateUrl: "partials/timeline.html", controller: "TimelineController"})
       .when("/login", {templateUrl: "partials/login.html", controller: "LoginController"})
+      .when("/developer", {templateUrl: "partials/developer.html", controller: "DeveloperController"})
       .otherwise({redirectTo: '/login'});
   }])
 
 
   .controller({
     TimelineController: require('./controllers/TimelineController'),
-    LoginController: require('./controllers/LoginController')
+    LoginController: require('./controllers/LoginController'),
+    DeveloperController: require('./controllers/DeveloperController'),
   })
 
 
