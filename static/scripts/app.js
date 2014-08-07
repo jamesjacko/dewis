@@ -73,6 +73,7 @@ module.exports = function($scope, $http, GetData){
       Quantity: "0"
     }
   ).success(function(dataReturned){
+			console.log(dataReturned);
       $scope.json = dataReturned;
     });
 
