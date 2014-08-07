@@ -25,14 +25,14 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		
 		// Call different handles depending on type of request
 		switch req.Request {
-			case "Timeline":
-				res := TimelineHandler(req)
+			/*case "Timeline":
+				res := timelineHandler(req)
 				if err := json.NewEncoder(w).Encode(res); err != nil {
 					log.Printf("ApiHandler: Something went wrong when encoding the JSON object.\n%v\n", err)
 					http.Error(w, "Oops. Something went wrong.", http.StatusInternalServerError)
-				}
-			case "Login":
-				res := LoginHandler(req)
+				}*/
+			case "Timeline":
+				res := loginHandler(req)
 				if err := json.NewEncoder(w).Encode(res); err != nil {
 					log.Printf("ApiHandler: Something went wrong when encoding the JSON object.\n%v\n", err)
 					http.Error(w, "Oops. Something went wrong.", http.StatusInternalServerError)

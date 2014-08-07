@@ -13,13 +13,8 @@ import (
 /* Default quantity of records when no quantity is passed */
 const defaultQnt = 5;
 
-type QueryStruct struct {
-	User 		bson.ObjectId	"user"
-	Content 	string			"content"
-	Time 		int				"time"
-}
-
-type User struct {
+/* Resonse structure which defines the owner user of an specific record */
+type UserTimeline struct {
 	Id 			bson.ObjectId	"_id"
 	Name 		string			"first_name"
 	Avatar 		string			"avatar"
@@ -30,7 +25,8 @@ type Record struct {
 	UserId		bson.ObjectId	"user"
 	Content 	string			"content"
 	Time 		int				"time"
-	UserData	User
+	UserData	UserTimeline	`bson:"-"` 	//ignore this field when marshalling to bson, 
+											//ie, when we add this struct to a database
 }
 
 /* Response struct containing the list of records and the status of the query */
@@ -96,10 +92,10 @@ func addRecords(dataMap map[string]string) bool {
     // Inserting values in the database
     conn := session.DB("dewis").C("timelineRecords")
     
-    // Inserting a QueryStruct in the database. First parameter is a Database Reference
-    // with and unique ID from the user
+    // Inserting a message in the database. First parameter is a unique ID from the user
+    // Last parameter is an empty struct to be ignored when adding into the database
    	hex, _ := hex.DecodeString(dataMap["User"])
-    if err := conn.Insert(&QueryStruct{bson.ObjectId(hex), dataMap["Content"], 0}); err != nil {
+    if err := conn.Insert(&Record{bson.ObjectId(hex), dataMap["Content"], 0, UserTimeline{}}); err != nil {
     	log.Printf("Function addRecords: Error when adding entries to database.\n %#v\n", err)
     	return false
     }
@@ -108,7 +104,7 @@ func addRecords(dataMap map[string]string) bool {
     return true
 }
 
-func TimelineHandler(dataMap RequestJSON) RecordsResp {
+func timelineHandler(dataMap RequestJSON) RecordsResp {
 	switch dataMap.Action {
 		case "GetRecords":
 			var res RecordsResp
