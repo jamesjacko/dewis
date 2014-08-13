@@ -9,6 +9,8 @@ module.exports= function($http){
       Data: data
     };
 
+    console.log("Here",requestObj);
+
     //console.log(requestObj);
     return $http({
       method: 'post',

@@ -4,8 +4,14 @@ angular.module('dewis', ['ngRoute'])
 
   .config(['$routeProvider', function($routeProvider){
     $routeProvider
-      .when("/timeline", {templateUrl: "partials/timeline.html", controller: "TimelineController"})
       .when("/login", {templateUrl: "partials/login.html", controller: "LoginController"})
+<<<<<<< HEAD
+=======
+      .when("/projects", {templateUrl: "partials/projects.html", controller: "ProjectsController"})
+      .when("/project/:id", {templateUrl: "partials/single-project/dash.html", controller: "SingleProjectController"})
+      .when("/project/:id/timeline", {templateUrl: "partials/timeline.html", controller: "TimelineController"})
+      .when("/project/:id/files", {templateUrl: "partials/single-project/files.html", controller: "SingleProjectFilesController"})
+>>>>>>> client-work
       .when("/developer", {templateUrl: "partials/developer.html", controller: "DeveloperController"})
       .otherwise({redirectTo: '/login'});
   }])
@@ -15,19 +21,31 @@ angular.module('dewis', ['ngRoute'])
     TimelineController: require('./controllers/TimelineController'),
     LoginController: require('./controllers/LoginController'),
     DeveloperController: require('./controllers/DeveloperController'),
+<<<<<<< HEAD
+=======
+    ProjectsController: require('./controllers/ProjectsController'),
+    SingleProjectController: require('./controllers/single-project/ProjectController'),
+    SingleProjectFilesController: require('./controllers/single-project/ProjectFilesController'),
+>>>>>>> client-work
   })
 
 
   .directive({
     ngEnter: require('./directives/ngEnter'),
-    scroller: require('./directives/scroller')
+    scroller: require('./directives/scroller'),
+    tree: require('./directives/tree'),
+    treeNode: require('./directives/treeNode')
   })
 
   
   .factory({
     GetData: require('./services/GetData')
   });
+<<<<<<< HEAD
 },{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/TimelineController":4,"./directives/ngEnter":5,"./directives/scroller":6,"./services/GetData":7}],2:[function(require,module,exports){
+=======
+},{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/ProjectsController":4,"./controllers/TimelineController":5,"./controllers/single-project/ProjectController":6,"./controllers/single-project/ProjectFilesController":7,"./directives/ngEnter":8,"./directives/scroller":9,"./directives/tree":10,"./directives/treeNode":11,"./services/GetData":12}],2:[function(require,module,exports){
+>>>>>>> client-work
 module.exports = function($scope, $parse, GetData){
   $scope.submit = function(){
     var ret = "";
@@ -77,7 +95,31 @@ module.exports = function($scope, $http){
 }
 
 },{}],4:[function(require,module,exports){
+<<<<<<< HEAD
 module.exports = function($scope, $http, GetData){
+=======
+module.exports = function($scope, $parse, GetData){
+  $scope.data = {
+    status: true,
+    data: {
+      project1: {
+        name: "Project1",
+        id: "123"
+      },
+      project2: {
+        name: "Project2",
+        id: "456"
+      }
+    }
+  };
+  $scope.goto = function(id){
+    $location.path("project/" + id);
+  }
+  console.log($scope.data);
+}
+},{}],5:[function(require,module,exports){
+module.exports = function($scope, $routeParams, GetData){
+>>>>>>> client-work
   $scope.curUser = "53dbafcff66029358cd113a1";
   Object.size = function(obj) {
     var size = 0, key;
@@ -153,7 +195,43 @@ module.exports = function($scope, $http, GetData){
   };
 };
 
+<<<<<<< HEAD
 },{}],5:[function(require,module,exports){
+=======
+},{}],6:[function(require,module,exports){
+module.exports = function($scope, $routeParams, GetData){
+  $scope.projectID = $routeParams.id;
+  console.log($scope.data);
+}
+},{}],7:[function(require,module,exports){
+module.exports = function($scope, $parse, GetData){
+  function Item(name, type, items){
+    this.name = name;
+    this.type = type;
+    this.items = items || [];
+  }
+  $scope.data = {
+    status: true,
+    data: [
+      new Item('Project', 'folder-open', [
+        new Item('topLevel', 'folder-open', [
+          new Item('file_1', 'file'),
+          new Item('file_2', 'file'),
+          new Item('2ndLevel', 'folder-open', [
+            new Item('file_3', 'file'),
+            new Item('file_4', 'file'),
+          ]),
+        ]),
+        new Item('file_6', 'file'),
+        new Item('file_7', 'file'),
+      ])
+      ]
+  };
+  
+  console.log($scope.data);
+}
+},{}],8:[function(require,module,exports){
+>>>>>>> client-work
 module.exports = function(){
   return function(scope, element, attrs) {
     element.bind("keydown keypress", function(event){
@@ -166,7 +244,11 @@ module.exports = function(){
     });
   };
 }
+<<<<<<< HEAD
 },{}],6:[function(require,module,exports){
+=======
+},{}],9:[function(require,module,exports){
+>>>>>>> client-work
 module.exports = function () {
   return { 
     restrict: 'A',
@@ -183,7 +265,36 @@ module.exports = function () {
     }
   };
 };
+<<<<<<< HEAD
 },{}],7:[function(require,module,exports){
+=======
+},{}],10:[function(require,module,exports){
+module.exports = function(){
+  return {
+    template: '<ul><tree-node ng-repeat="item in items"></tree-node></ul>',
+    restrict: 'E',
+    replace: true,
+    scope: {
+      items: '=items'
+    }
+  };
+}
+},{}],11:[function(require,module,exports){
+module.exports = function($compile){
+  return {
+    restrict: 'E',
+    template: '<li><span><i class="glyphicon glyphicon-{{item.type}} text-primary"></i>{{item.name}}</span></li>',
+    replace: true,
+    link: function(scope, elem, attrs){
+      if(scope.item.items.length > 0){
+        var children = $compile('<tree items="item.items"></tree>')(scope);
+        elem.append(children);
+      }
+    }
+  };
+}
+},{}],12:[function(require,module,exports){
+>>>>>>> client-work
 module.exports= function($http){
   
   function fetch(req, act, data){
