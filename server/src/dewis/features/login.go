@@ -6,7 +6,7 @@ import (
 	"log"
 	"gopkg.in/mgo.v2"
    	"gopkg.in/mgo.v2/bson"
-    //"strconv"
+    "code.google.com/p/go.crypto/bcrypt"
     //"encoding/hex"
 )
 
@@ -15,13 +15,13 @@ type LoginResp struct {
 	Message string
 }
 
-type User struct {
+type UserLogin struct {
 	Username string	"email"
 	Password string "password"
 }
 
-func loginHandler(dataMap RequestJSON) LoginResp {
-	var user User
+func loginHandler(req RequestJSON) LoginResp {
+	var user UserLogin
 	
 	// Connecting to the database
     session, err := mgo.Dial("localhost");
@@ -30,16 +30,16 @@ func loginHandler(dataMap RequestJSON) LoginResp {
     	return LoginResp{false, "Error when opening connection to database"}
     }
     defer session.Close()
-    
+
     // Querying the database
-    conn := session.DB("dewis").C("Users")
-    if err := conn.Find(bson.M{"email": dataMap.Data["User"]}).One(&user); err != nil {
+    conn := session.DB(databaseName).C(usersCol)
+    if err := conn.Find(bson.M{"email": req.Data["Username"]}).One(&user); err != nil {
     	log.Printf("Function loginHandler: Error when querying database. User not found.\n%v\n", err)
     	return LoginResp{false, "User not found."}
     }
     
     //Checking if password matches
-    if dataMap.Data["password"] == user.Password {
+    if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Data["Password"])); err == nil {
     	return LoginResp{true, ""}
     } else {
 		return LoginResp{false, "Wrong password"}

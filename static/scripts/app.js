@@ -6,13 +6,15 @@ angular.module('dewis', ['ngRoute'])
     $routeProvider
       .when("/timeline", {templateUrl: "partials/timeline.html", controller: "TimelineController"})
       .when("/login", {templateUrl: "partials/login.html", controller: "LoginController"})
+      .when("/developer", {templateUrl: "partials/developer.html", controller: "DeveloperController"})
       .otherwise({redirectTo: '/login'});
   }])
 
 
   .controller({
     TimelineController: require('./controllers/TimelineController'),
-    LoginController: require('./controllers/LoginController')
+    LoginController: require('./controllers/LoginController'),
+    DeveloperController: require('./controllers/DeveloperController'),
   })
 
 
@@ -25,7 +27,25 @@ angular.module('dewis', ['ngRoute'])
   .factory({
     GetData: require('./services/GetData')
   });
-},{"./controllers/LoginController":2,"./controllers/TimelineController":3,"./directives/ngEnter":4,"./directives/scroller":5,"./services/GetData":6}],2:[function(require,module,exports){
+},{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/TimelineController":4,"./directives/ngEnter":5,"./directives/scroller":6,"./services/GetData":7}],2:[function(require,module,exports){
+module.exports = function($scope, $parse, GetData){
+  $scope.submit = function(){
+    var ret = "";
+    console.log(angular.fromJson($scope.DataObj));
+    GetData.fetch(
+      $scope.Request, 
+      $scope.Action, 
+      angular.fromJson($scope.DataObj)
+    ).success(function(dataReturned){
+        console.log(dataReturned);
+        console.log($scope);
+        $scope.ReturnedData = angular.toJson(dataReturned);
+        //alert(angular.toJson(dataReturned));
+    });
+    
+  }
+}
+},{}],3:[function(require,module,exports){
 module.exports = function($scope, $http){
   $scope.data = {
     request: 'test',
@@ -50,9 +70,13 @@ module.exports = function($scope, $http){
     }).error(function(data, status, headers, config){
       console.log(data, status, headers, config);
     });
+
+
+
   }
 }
-},{}],3:[function(require,module,exports){
+
+},{}],4:[function(require,module,exports){
 module.exports = function($scope, $http, GetData){
   $scope.curUser = "53dbafcff66029358cd113a1";
   Object.size = function(obj) {
@@ -73,9 +97,9 @@ module.exports = function($scope, $http, GetData){
       Quantity: "0"
     }
   ).success(function(dataReturned){
-			console.log(dataReturned);
+      console.log(dataReturned);
       $scope.json = dataReturned;
-    });
+  });
 
   if($scope.json == null){
     $scope.json = {
@@ -83,7 +107,7 @@ module.exports = function($scope, $http, GetData){
       Records: Array()
     }
   }
-  console.log($scope.json);
+  //console.log($scope.json);
 
   $scope.users = {
     status: "ok",
@@ -128,7 +152,8 @@ module.exports = function($scope, $http, GetData){
     alert("hello");
   };
 };
-},{}],4:[function(require,module,exports){
+
+},{}],5:[function(require,module,exports){
 module.exports = function(){
   return function(scope, element, attrs) {
     element.bind("keydown keypress", function(event){
@@ -141,7 +166,7 @@ module.exports = function(){
     });
   };
 }
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = function () {
   return { 
     restrict: 'A',
@@ -158,7 +183,7 @@ module.exports = function () {
     }
   };
 };
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports= function($http){
   
   function fetch(req, act, data){
@@ -169,6 +194,8 @@ module.exports= function($http){
       Action: act,
       Data: data
     };
+
+    console.log("Here",requestObj);
 
     //console.log(requestObj);
     return $http({

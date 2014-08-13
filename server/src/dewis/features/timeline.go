@@ -10,9 +10,6 @@ import (
     "encoding/hex"
 )
 
-/* Default quantity of records when no quantity is passed */
-const defaultQnt = 5;
-
 /* Resonse structure which defines the owner user of an specific record */
 type UserTimeline struct {
 	Id 			bson.ObjectId	"_id"
@@ -47,10 +44,6 @@ func getRecords(res *RecordsResp, qntString string) {
 		return
 	}
 	
-	if qnt == 0 {
-		qnt = defaultQnt;
-	}
-	
 	// Connecting to the database
     session, err := mgo.Dial("localhost");
     if err != nil {
@@ -60,14 +53,14 @@ func getRecords(res *RecordsResp, qntString string) {
     defer session.Close()
     
     // Querying the database
-    conn := session.DB("dewis").C("timelineRecords")
-    if err := conn.Find(nil).All(&res.Records); err != nil {
+    conn := session.DB(databaseName).C(timelineRecordsCol)
+    if err := conn.Find(nil).Limit(qnt).All(&res.Records); err != nil {
     	log.Printf("Function getRecords: Error when querying database.\n %v\n", err)
     	return
     }
     
     // Getting the User Data
-    conn = session.DB("dewis").C("Users")
+    conn = session.DB(databaseName).C(usersCol)
     for i, _ := range res.Records {
     	if err := conn.FindId(res.Records[i].UserId).One(&res.Records[i].UserData); err != nil {
     		log.Printf("Function getRecords: Error when getting user data\n %v\n", err)
@@ -90,7 +83,7 @@ func addRecords(dataMap map[string]string) bool {
     defer session.Close()
     
     // Inserting values in the database
-    conn := session.DB("dewis").C("timelineRecords")
+    conn := session.DB(databaseName).C(timelineRecordsCol)
     
     // Inserting a message in the database. First parameter is a unique ID from the user
     // Last parameter is an empty struct to be ignored when adding into the database
@@ -104,14 +97,14 @@ func addRecords(dataMap map[string]string) bool {
     return true
 }
 
-func timelineHandler(dataMap RequestJSON) RecordsResp {
-	switch dataMap.Action {
+func timelineHandler(req RequestJSON) RecordsResp {
+	switch req.Action {
 		case "GetRecords":
 			var res RecordsResp
-			getRecords(&res, dataMap.Data["Quantity"])
+			getRecords(&res, req.Data["Quantity"])
 			return res
 		case "AddRecord":	
-			return RecordsResp{addRecords(dataMap.Data), nil}
+			return RecordsResp{addRecords(req.Data), nil}
 	}
 	return RecordsResp{}
 }
