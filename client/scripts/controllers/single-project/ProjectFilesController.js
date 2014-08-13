@@ -3,6 +3,9 @@ module.exports = function($scope, $parse, GetData){
     this.name = name;
     this.type = type;
     this.items = items || [];
+    this.add = function(toAdd){
+      this.items.push(toAdd);
+    }
   }
   $scope.data = {
     status: true,
@@ -21,6 +24,6 @@ module.exports = function($scope, $parse, GetData){
       ])
       ]
   };
-  
+  $scope.data.data[0].items[0].add(new Item('file_8', 'file'));
   console.log($scope.data);
 }

@@ -186,3 +186,11 @@ body {
   margin-bottom: 0 !important;
   background-color: #fff;
   border-bottom: 0; }
+
+li .glyphicon-plus {
+  display: none; }
+
+ul > li:hover > span > .glyphicon-plus {
+  display: inline-block;
+  margin: 0 0 0 10px !important;
+  cursor: pointer; }

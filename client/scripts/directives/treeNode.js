@@ -1,7 +1,13 @@
-module.exports = function($compile){
+module.exports = function($compile, $log){
   return {
     restrict: 'E',
-    template: '<li><span><i class="glyphicon glyphicon-{{item.type}} text-primary"></i>{{item.name}}</span></li>',
+    template: '<li ng-click="$log.log(\'hello\')">'+
+              ' <span>'+
+              '   <i class="glyphicon glyphicon-{{item.type}} text-success"></i>'+
+              '     {{item.name}}'+
+              '   <i class="glyphicon glyphicon-plus text-primary"></i>'+
+              ' </span>'+
+              '</li>',
     replace: true,
     link: function(scope, elem, attrs){
       if(scope.item.items.length > 0){

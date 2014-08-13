@@ -1,12 +1,10 @@
 <h1>Login</h1>
-    <form method="post">
+    <form method="post" ng-submit="login()">
         Username:<br />
-        <input type="text" name="username" value="<?php echo $submitted_username; ?>" ng-model="data.username" />
+        <input type="text" name="username" ng-model="data.Username" />
         <br /><br />
         Password:<br />
-        <input type="password" name="password" value="" ng-model="data.password" />
+        <input type="password" name="password" value="" ng-model="data.Password" />
         <br /><br />
         <input type="submit" value="Login" />
     </form>
-
-		<a href="#" ng-click="login()">Send Message</a>

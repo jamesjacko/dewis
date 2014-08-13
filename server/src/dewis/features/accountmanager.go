@@ -26,7 +26,7 @@ type User struct {
 
 func (user *User) newUser(dataMap map[string]string, res *AccMngResponse){
 	// Hashing password, if hash fails, abort user
-	hash, err := bcrypt.GenerateFromPassword([]byte(dataMap["password"]), 12)
+	hash, err := bcrypt.GenerateFromPassword([]byte(dataMap["Password"]), 12)
 	if err != nil {
 		log.Printf("Function addUser: Error when encrypting the password.\n%v\b", err)
 		res.Status = false
@@ -36,24 +36,24 @@ func (user *User) newUser(dataMap map[string]string, res *AccMngResponse){
 
 	// Converting the IsAdmin flag from string to bool
 	var flag bool
-	switch dataMap["isadmin"] {
+	switch dataMap["Isadmin"] {
 		case "true":
 			flag = true
-		case "false":
-			flag = false
 		default:
-			log.Printf("Function addUser: Error when converting isadmin to boolean.\n")
-			res.Status = false
-			res.Message = "Error when converting isadmin to boolean"
-			return
+			flag = false
+		// default:
+		// 	log.Printf("Function addUser: Error when converting isadmin to boolean.\n")
+		// 	res.Status = false
+		// 	res.Message = "Error when converting isadmin to boolean"
+		// 	return
 	}
 
-	user.FirstName	= dataMap["firstname"]
-	user.LastName	= dataMap["lastname"]
+	user.FirstName	= dataMap["Firstname"]
+	user.LastName	= dataMap["Lastname"]
 	user.IsAdmin	= flag
-	user.Email		= dataMap["email"]
+	user.Email		= dataMap["Email"]
 	user.Password	= string(hash)
-	user.Avatar		= dataMap["avatar"]
+	user.Avatar		= dataMap["Avatar"]
 
 	res.Status = true
 	res.Message = ""

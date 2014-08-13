@@ -5,13 +5,11 @@ angular.module('dewis', ['ngRoute'])
   .config(['$routeProvider', function($routeProvider){
     $routeProvider
       .when("/login", {templateUrl: "partials/login.html", controller: "LoginController"})
-<<<<<<< HEAD
-=======
+      .when("/new-user", {templateUrl: "partials/new-user.html", controller: "NewUserController"})
       .when("/projects", {templateUrl: "partials/projects.html", controller: "ProjectsController"})
       .when("/project/:id", {templateUrl: "partials/single-project/dash.html", controller: "SingleProjectController"})
       .when("/project/:id/timeline", {templateUrl: "partials/timeline.html", controller: "TimelineController"})
       .when("/project/:id/files", {templateUrl: "partials/single-project/files.html", controller: "SingleProjectFilesController"})
->>>>>>> client-work
       .when("/developer", {templateUrl: "partials/developer.html", controller: "DeveloperController"})
       .otherwise({redirectTo: '/login'});
   }])
@@ -20,13 +18,11 @@ angular.module('dewis', ['ngRoute'])
   .controller({
     TimelineController: require('./controllers/TimelineController'),
     LoginController: require('./controllers/LoginController'),
+    NewUserController: require('./controllers/NewUserController'),
     DeveloperController: require('./controllers/DeveloperController'),
-<<<<<<< HEAD
-=======
     ProjectsController: require('./controllers/ProjectsController'),
     SingleProjectController: require('./controllers/single-project/ProjectController'),
     SingleProjectFilesController: require('./controllers/single-project/ProjectFilesController'),
->>>>>>> client-work
   })
 
 
@@ -41,11 +37,7 @@ angular.module('dewis', ['ngRoute'])
   .factory({
     GetData: require('./services/GetData')
   });
-<<<<<<< HEAD
-},{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/TimelineController":4,"./directives/ngEnter":5,"./directives/scroller":6,"./services/GetData":7}],2:[function(require,module,exports){
-=======
-},{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/ProjectsController":4,"./controllers/TimelineController":5,"./controllers/single-project/ProjectController":6,"./controllers/single-project/ProjectFilesController":7,"./directives/ngEnter":8,"./directives/scroller":9,"./directives/tree":10,"./directives/treeNode":11,"./services/GetData":12}],2:[function(require,module,exports){
->>>>>>> client-work
+},{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/NewUserController":4,"./controllers/ProjectsController":5,"./controllers/TimelineController":6,"./controllers/single-project/ProjectController":7,"./controllers/single-project/ProjectFilesController":8,"./directives/ngEnter":9,"./directives/scroller":10,"./directives/tree":11,"./directives/treeNode":12,"./services/GetData":13}],2:[function(require,module,exports){
 module.exports = function($scope, $parse, GetData){
   $scope.submit = function(){
     var ret = "";
@@ -64,29 +56,20 @@ module.exports = function($scope, $parse, GetData){
   }
 }
 },{}],3:[function(require,module,exports){
-module.exports = function($scope, $http){
+module.exports = function($scope, $http, GetData){
   $scope.data = {
-    request: 'test',
-    status: 'HelloWorld'
+    Username: null,
+    Password: null
   };
   $scope.login = function(){
-    var dataString = "";
-    for (var key in $scope.data) {
-        if (dataString != "") {
-            dataString += "&";
-        }
-        dataString += key + "=" + $scope.data[key];
-    }
-    console.log(dataString);
-    $http({
-      method: 'post',
-      url: '/api',
-      data: dataString,
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data){
-      console.log(data.Data);
-    }).error(function(data, status, headers, config){
-      console.log(data, status, headers, config);
+    console.log($scope.data);
+    $scope.json = GetData.fetch(
+      'Login', 
+      'Login', 
+      $scope.data
+    ).success(function(dataReturned){
+        console.log(dataReturned);
+        $scope.json = dataReturned;
     });
 
 
@@ -95,9 +78,24 @@ module.exports = function($scope, $http){
 }
 
 },{}],4:[function(require,module,exports){
-<<<<<<< HEAD
 module.exports = function($scope, $http, GetData){
-=======
+  $scope.data = {};
+  $scope.data.Isadmin = "false";
+  $scope.processUser = function(){
+    console.log($scope.data);
+    $scope.data.Isadmin = $scope.data.Isadmin.toString();
+    $scope.json = GetData.fetch(
+      'User', 
+      'addUser', 
+      $scope.data
+    ).success(function(dataReturned){
+        console.log(dataReturned);
+        $scope.json = dataReturned;
+    });
+  }
+}
+
+},{}],5:[function(require,module,exports){
 module.exports = function($scope, $parse, GetData){
   $scope.data = {
     status: true,
@@ -117,9 +115,8 @@ module.exports = function($scope, $parse, GetData){
   }
   console.log($scope.data);
 }
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = function($scope, $routeParams, GetData){
->>>>>>> client-work
   $scope.curUser = "53dbafcff66029358cd113a1";
   Object.size = function(obj) {
     var size = 0, key;
@@ -195,20 +192,20 @@ module.exports = function($scope, $routeParams, GetData){
   };
 };
 
-<<<<<<< HEAD
-},{}],5:[function(require,module,exports){
-=======
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = function($scope, $routeParams, GetData){
   $scope.projectID = $routeParams.id;
   console.log($scope.data);
 }
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = function($scope, $parse, GetData){
   function Item(name, type, items){
     this.name = name;
     this.type = type;
     this.items = items || [];
+    this.add = function(toAdd){
+      this.items.push(toAdd);
+    }
   }
   $scope.data = {
     status: true,
@@ -227,11 +224,10 @@ module.exports = function($scope, $parse, GetData){
       ])
       ]
   };
-  
+  $scope.data.data[0].items[0].add(new Item('file_8', 'file'));
   console.log($scope.data);
 }
-},{}],8:[function(require,module,exports){
->>>>>>> client-work
+},{}],9:[function(require,module,exports){
 module.exports = function(){
   return function(scope, element, attrs) {
     element.bind("keydown keypress", function(event){
@@ -244,11 +240,7 @@ module.exports = function(){
     });
   };
 }
-<<<<<<< HEAD
-},{}],6:[function(require,module,exports){
-=======
-},{}],9:[function(require,module,exports){
->>>>>>> client-work
+},{}],10:[function(require,module,exports){
 module.exports = function () {
   return { 
     restrict: 'A',
@@ -265,10 +257,7 @@ module.exports = function () {
     }
   };
 };
-<<<<<<< HEAD
-},{}],7:[function(require,module,exports){
-=======
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function(){
   return {
     template: '<ul><tree-node ng-repeat="item in items"></tree-node></ul>',
@@ -279,11 +268,17 @@ module.exports = function(){
     }
   };
 }
-},{}],11:[function(require,module,exports){
-module.exports = function($compile){
+},{}],12:[function(require,module,exports){
+module.exports = function($compile, $log){
   return {
     restrict: 'E',
-    template: '<li><span><i class="glyphicon glyphicon-{{item.type}} text-primary"></i>{{item.name}}</span></li>',
+    template: '<li ng-click="$log.log(\'hello\')">'+
+              ' <span>'+
+              '   <i class="glyphicon glyphicon-{{item.type}} text-success"></i>'+
+              '     {{item.name}}'+
+              '   <i class="glyphicon glyphicon-plus text-primary"></i>'+
+              ' </span>'+
+              '</li>',
     replace: true,
     link: function(scope, elem, attrs){
       if(scope.item.items.length > 0){
@@ -293,8 +288,7 @@ module.exports = function($compile){
     }
   };
 }
-},{}],12:[function(require,module,exports){
->>>>>>> client-work
+},{}],13:[function(require,module,exports){
 module.exports= function($http){
   
   function fetch(req, act, data){

@@ -4,6 +4,7 @@ angular.module('dewis', ['ngRoute'])
   .config(['$routeProvider', function($routeProvider){
     $routeProvider
       .when("/login", {templateUrl: "partials/login.html", controller: "LoginController"})
+      .when("/new-user", {templateUrl: "partials/new-user.html", controller: "NewUserController"})
       .when("/projects", {templateUrl: "partials/projects.html", controller: "ProjectsController"})
       .when("/project/:id", {templateUrl: "partials/single-project/dash.html", controller: "SingleProjectController"})
       .when("/project/:id/timeline", {templateUrl: "partials/timeline.html", controller: "TimelineController"})
@@ -16,6 +17,7 @@ angular.module('dewis', ['ngRoute'])
   .controller({
     TimelineController: require('./controllers/TimelineController'),
     LoginController: require('./controllers/LoginController'),
+    NewUserController: require('./controllers/NewUserController'),
     DeveloperController: require('./controllers/DeveloperController'),
     ProjectsController: require('./controllers/ProjectsController'),
     SingleProjectController: require('./controllers/single-project/ProjectController'),
