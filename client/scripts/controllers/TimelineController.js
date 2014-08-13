@@ -1,4 +1,4 @@
-module.exports = function($scope, $http, GetData){
+module.exports = function($scope, $routeParams, GetData){
   $scope.curUser = "53dbafcff66029358cd113a1";
   Object.size = function(obj) {
     var size = 0, key;
