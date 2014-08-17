@@ -1,7 +1,7 @@
 package features
 
 import (
-	//"fmt"
+	"fmt"
 	//"reflect"
 	"log"
 	"gopkg.in/mgo.v2"
@@ -39,6 +39,7 @@ func loginHandler(req RequestJSON) LoginResp {
     }
     
     //Checking if password matches
+    fmt.Printf(req.Data["Password"]);
     if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Data["Password"])); err == nil {
     	return LoginResp{true, ""}
     } else {

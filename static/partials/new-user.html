@@ -1,0 +1,22 @@
+<h1>Add New User</h1>
+    <form method="post" ng-submit="processUser()">
+        First Name:<br />
+        <input type="text" name="firstname" ng-model="data.Firstname" />
+        <br /><br />
+        Last Name:<br />
+        <input type="text" name="lastname" ng-model="data.Lastname" />
+        <br /><br />
+        Email:<br />
+        <input type="email" name="email" ng-model="data.Email" />
+        <br /><br />
+        Avatar:<br />
+        <input type="text" name="avatar" ng-model="data.Avatar" />
+        <br /><br />
+        Password:<br />
+        <input type="password" name="password" value="" ng-model="data.Password" />
+        <br /><br />
+        <label for="isadmin"><input type="checkbox" name="isadmin" ng-model="data.Isadmin" /> Admin {{data.Isadmin}}</label>
+        <br />
+        <input type="submit" value="Add User" />
+
+    </form>

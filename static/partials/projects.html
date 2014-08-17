@@ -1,0 +1,4 @@
+<ul ng-show="data.status == true" class="nav nav-pills">
+<li ng-repeat="project in data.data"><a href="/#/project/{{project.id}}">{{project.name}}</a></li>
+</ul>
+<div ng-show="data.status != true" class="alert alert-info"><strong>Heads Up!<strong> You currently have no projects</p>

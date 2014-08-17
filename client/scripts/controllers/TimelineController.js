@@ -1,4 +1,4 @@
-module.exports = function($scope, $http, GetData){
+module.exports = function($scope, $routeParams, GetData){
   $scope.curUser = "53dbafcff66029358cd113a1";
   Object.size = function(obj) {
     var size = 0, key;
@@ -18,8 +18,9 @@ module.exports = function($scope, $http, GetData){
       Quantity: "0"
     }
   ).success(function(dataReturned){
+      console.log(dataReturned);
       $scope.json = dataReturned;
-    });
+  });
 
   if($scope.json == null){
     $scope.json = {
@@ -27,7 +28,7 @@ module.exports = function($scope, $http, GetData){
       Records: Array()
     }
   }
-  console.log($scope.json);
+  //console.log($scope.json);
 
   $scope.users = {
     status: "ok",

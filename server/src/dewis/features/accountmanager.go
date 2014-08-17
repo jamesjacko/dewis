@@ -39,13 +39,13 @@ func (user *User) newUser(dataMap map[string]string, res *AccMngResponse){
 	switch dataMap["Isadmin"] {
 		case "true":
 			flag = true
-		case "false":
-			flag = false
 		default:
-			log.Printf("Function addUser: Error when converting isadmin to boolean.\n")
-			res.Status = false
-			res.Message = "Error when converting isadmin to boolean"
-			return
+			flag = false
+		// default:
+		// 	log.Printf("Function addUser: Error when converting isadmin to boolean.\n")
+		// 	res.Status = false
+		// 	res.Message = "Error when converting isadmin to boolean"
+		// 	return
 	}
 
 	user.FirstName	= dataMap["Firstname"]
