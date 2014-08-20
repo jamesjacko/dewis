@@ -74,9 +74,12 @@ func addUser(dataMap map[string]string, res *AccMngResponse) {
     // Marshalling user data
     user := User{}
     user.newUser(dataMap, res)
+    if res.Status == false {
+    	return
+    }
 
     // Openning collection
-    conn := session.DB(databaseName).C(usersCol)
+    conn := session.DB(DATABASE_NAME).C(USERS_COLLECTION)
   
     // Inserting an user in the database.
     if err := conn.Insert(&user); err != nil {
@@ -85,8 +88,6 @@ func addUser(dataMap map[string]string, res *AccMngResponse) {
 		res.Message = "Error when adding entries to database"
     	return 
     }
-    
-    //Query succeded
 }
 
 func userHandler(req RequestJSON) AccMngResponse {

@@ -1,2 +1,4 @@
 node_modules
 .sass-cache
+server/pkg
+server/bin

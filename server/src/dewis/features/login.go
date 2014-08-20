@@ -1,7 +1,7 @@
 package features
 
 import (
-	"fmt"
+	//"fmt"
 	//"reflect"
 	"log"
 	"gopkg.in/mgo.v2"
@@ -32,14 +32,13 @@ func loginHandler(req RequestJSON) LoginResp {
     defer session.Close()
 
     // Querying the database
-    conn := session.DB(databaseName).C(usersCol)
+    conn := session.DB(DATABASE_NAME).C(USERS_COLLECTION)
     if err := conn.Find(bson.M{"email": req.Data["Username"]}).One(&user); err != nil {
     	log.Printf("Function loginHandler: Error when querying database. User not found.\n%v\n", err)
     	return LoginResp{false, "User not found."}
     }
     
     //Checking if password matches
-    fmt.Printf(req.Data["Password"]);
     if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Data["Password"])); err == nil {
     	return LoginResp{true, ""}
     } else {
