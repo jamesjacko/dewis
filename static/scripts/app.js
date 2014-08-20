@@ -272,7 +272,7 @@ module.exports = function(){
 module.exports = function($compile, $log){
   return {
     restrict: 'E',
-    template: '<li ng-click="$log.log(\'hello\')">'+
+    template: '<li ng-click="hi()">'+
               ' <span>'+
               '   <i class="glyphicon glyphicon-{{item.type}} text-success"></i>'+
               '     {{item.name}}'+
@@ -285,6 +285,7 @@ module.exports = function($compile, $log){
         var children = $compile('<tree items="item.items"></tree>')(scope);
         elem.append(children);
       }
+      scope.hi - function(){ alert("hi"); }
     }
   };
 }
