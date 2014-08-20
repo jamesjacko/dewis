@@ -79,7 +79,7 @@ func addUser(dataMap map[string]string, res *AccMngResponse) {
     }
 
     // Openning collection
-    conn := session.DB(databaseName).C(usersCol)
+    conn := session.DB(DATABASE_NAME).C(USERS_COLLECTION)
   
     // Inserting an user in the database.
     if err := conn.Insert(&user); err != nil {

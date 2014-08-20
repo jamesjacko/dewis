@@ -53,14 +53,14 @@ func getRecords(res *RecordsResp, qntString string) {
     defer session.Close()
     
     // Querying the database
-    conn := session.DB(databaseName).C(timelineRecordsCol)
+    conn := session.DB(DATABASE_NAME).C(RECORDS_COLLECTION)
     if err := conn.Find(nil).Limit(qnt).All(&res.Records); err != nil {
     	log.Printf("Function getRecords: Error when querying database.\n %v\n", err)
     	return
     }
     
     // Getting the User Data
-    conn = session.DB(databaseName).C(usersCol)
+    conn = session.DB(DATABASE_NAME).C(USERS_COLLECTION)
     for i, _ := range res.Records {
     	if err := conn.FindId(res.Records[i].UserId).One(&res.Records[i].UserData); err != nil {
     		log.Printf("Function getRecords: Error when getting user data\n %v\n", err)
@@ -83,7 +83,7 @@ func addRecords(dataMap map[string]string) bool {
     defer session.Close()
     
     // Inserting values in the database
-    conn := session.DB(databaseName).C(timelineRecordsCol)
+    conn := session.DB(DATABASE_NAME).C(RECORDS_COLLECTION)
     
     // Inserting a message in the database. First parameter is a unique ID from the user
     // Last parameter is an empty struct to be ignored when adding into the database

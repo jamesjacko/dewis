@@ -19,6 +19,7 @@ func main() {
 		http.HandleFunc("/api", features.ApiHandler)
 		http.Handle("/", http.FileServer(http.Dir("/var/develop/dewis/static/")))
 		fmt.Println("Server running...")
+		go features.Store.CheckSessions()
     	http.ListenAndServe(":8080", nil)
 	} else {
 		fmt.Println("Wrong arguments. Please read documentation.")
