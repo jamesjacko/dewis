@@ -6,27 +6,15 @@ import (
 	"time"
 	"math/rand"
 	"strconv"
-	"net/http"
-	"github.com/gorilla/securecookie"
 )
 
-/* This file implements dewis version of sessions. It uses the gorilla's session package
- * and builds a wrap in it for our purpose
- */
+/* Maximum time in seconds that a session is valid*/
+const MAX_LIFE int64 = 60 * 60 * 24 * 1 //60s in 60min in 24 hours in x days
 
 /* The session struct contains also the name of the user whose this session belongs.
  * This way, its easier to handle a session by username and we can use randoms SessionID,
  * making the hijack of a session much more complicated.
  */
-
-/* Maximum time in seconds that a session is valid*/
-const MAX_LIFE int64 = 60 * 60 * 24 * 1 //60s in 60min in 24 hours in x days
-
-type sessionResponse struct {
-	Status 	bool
-	Message string
-}
-
 type Session struct {
 	User 		string
 	SessionID 	string
@@ -64,13 +52,12 @@ func (s *SessionStorage) RemoveSession(username string) {
  * A session is valid if it has been used in less than the maximum expiry date;
  */
 func (s *SessionStorage) CheckSessions() {
-	fmt.Printf("Starting session check\n")
+	fmt.Printf("Starting session check...\n")
 	for {
 		lenght := len(*s)
 
 		for i := 0; i < lenght; i++ {
 			dif := time.Now().Unix() - (*s)[i].lastUsed
-			fmt.Println(dif)
 			if dif >= MAX_LIFE {
 				s.RemoveSession((*s)[i].User)
 				lenght--;
@@ -121,22 +108,4 @@ func (s *SessionStorage) Print() {
 		fmt.Printf("[%s, %s, %d] ", element.User, element.SessionID, element.lastUsed)
 	}
 	fmt.Printf("}\n")
-}
-
-func checkCookie(r *http.Request) sessionResponse {
-	// Parsing cookie from request
-	reqCookie, errCookie := r.Cookie("session")
-	
-	//There is no session cookie in the request
-	if errCookie != nil {
-		return sessionResponse{false, "User not authenticated"}
-	}
-
-	var s = securecookie.New([]byte("dewis-hashkey-cookie"), []byte("encryption-key-dewis-hash78aw971"))
-	var session *Session
-	_ = s.Decode("session", reqCookie.Value, session)
-
-	fmt.Println(session)
-
-	return sessionResponse{true, ""}
 }

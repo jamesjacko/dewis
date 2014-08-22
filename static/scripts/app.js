@@ -2,7 +2,8 @@
 angular.module('dewis', ['ngRoute'])
 
 
-  .config(['$routeProvider', function($routeProvider){
+  .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider){
+    $httpProvider.defaults.withCredentials = true;
     $routeProvider
       .when("/login", {templateUrl: "partials/login.html", controller: "LoginController"})
       .when("/new-user", {templateUrl: "partials/new-user.html", controller: "NewUserController"})
@@ -35,13 +36,14 @@ angular.module('dewis', ['ngRoute'])
 
   
   .factory({
-    GetData: require('./services/GetData')
+    GetData: require('./services/GetData'),
+    Auth: require('./services/Auth')
   });
-},{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/NewUserController":4,"./controllers/ProjectsController":5,"./controllers/TimelineController":6,"./controllers/single-project/ProjectController":7,"./controllers/single-project/ProjectFilesController":8,"./directives/ngEnter":9,"./directives/scroller":10,"./directives/tree":11,"./directives/treeNode":12,"./services/GetData":13}],2:[function(require,module,exports){
+},{"./controllers/DeveloperController":2,"./controllers/LoginController":3,"./controllers/NewUserController":4,"./controllers/ProjectsController":5,"./controllers/TimelineController":6,"./controllers/single-project/ProjectController":7,"./controllers/single-project/ProjectFilesController":8,"./directives/ngEnter":9,"./directives/scroller":10,"./directives/tree":11,"./directives/treeNode":12,"./services/Auth":13,"./services/GetData":14}],2:[function(require,module,exports){
 module.exports = function($scope, $parse, GetData){
   $scope.submit = function(){
     var ret = "";
-    console.log(angular.fromJson($scope.DataObj));
+    console.log("Sending this: ", $scope.Request, $scope.Action);
     GetData.fetch(
       $scope.Request, 
       $scope.Action, 
@@ -56,7 +58,7 @@ module.exports = function($scope, $parse, GetData){
   }
 }
 },{}],3:[function(require,module,exports){
-module.exports = function($scope, $http, GetData){
+module.exports = function($scope, $http, $location, GetData){
   $scope.data = {
     Username: null,
     Password: null
@@ -64,16 +66,16 @@ module.exports = function($scope, $http, GetData){
   $scope.login = function(){
     console.log($scope.data);
     $scope.json = GetData.fetch(
-      'Login', 
+      'Auth', 
       'Login', 
       $scope.data
     ).success(function(dataReturned){
         console.log(dataReturned);
         $scope.json = dataReturned;
+        if($scope.json.Status == true){
+          $location.path("/projects");
+        }
     });
-
-
-
   }
 }
 
@@ -116,8 +118,8 @@ module.exports = function($scope, $parse, GetData){
   console.log($scope.data);
 }
 },{}],6:[function(require,module,exports){
-module.exports = function($scope, $routeParams, GetData){
-  $scope.curUser = "53dbafcff66029358cd113a1";
+module.exports = function($scope, $routeParams, $location, GetData, Auth){
+  $scope.curUser = Auth.auth();
   Object.size = function(obj) {
     var size = 0, key;
     for (key in obj) {
@@ -272,7 +274,7 @@ module.exports = function(){
 module.exports = function($compile, $log){
   return {
     restrict: 'E',
-    template: '<li ng-click="$log.log(\'hello\')">'+
+    template: '<li ng-click="hi()">'+
               ' <span>'+
               '   <i class="glyphicon glyphicon-{{item.type}} text-success"></i>'+
               '     {{item.name}}'+
@@ -285,10 +287,31 @@ module.exports = function($compile, $log){
         var children = $compile('<tree items="item.items"></tree>')(scope);
         elem.append(children);
       }
+      scope.hi - function(){ alert("hi"); }
     }
   };
 }
 },{}],13:[function(require,module,exports){
+module.exports = function($location, GetData){
+  function auth(){
+    GetData.fetch(
+      'Auth', 
+      'GetUser'
+    ).success(function(dataReturned){
+        console.log(dataReturned);
+        if(dataReturned == true){
+          return dataReturned.curUser;
+        } else {
+          $location.path("/login");
+        }
+    });
+  }
+
+  return{
+    auth: auth
+  }
+}
+},{}],14:[function(require,module,exports){
 module.exports= function($http){
   
   function fetch(req, act, data){

@@ -2,12 +2,9 @@ package features
 
 import (
 	//"fmt"
-	"time"
     "net/http"
     "encoding/json"
     "log"
-    "github.com/gorilla/securecookie"
-    //"reflect"
 )
 
 type RequestJSON struct {
@@ -26,11 +23,13 @@ func save(w http.ResponseWriter, resp interface{}) {
 		log.Printf("ApiHandler: Something went wrong when encoding the JSON object.\n%v\n", err)
 		http.Error(w, "Oops. Something went wrong.", http.StatusInternalServerError)
 	}
+	//fmt.Println(encoder)
 }
 
 /* TODO
  * Figure out why it is so slow to return the login anwser
  * Modularize some "Login" code into functions
+ * Add Login and Logout actions in Auth
 */
 func ApiHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
@@ -45,7 +44,7 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		switch req.Request {
 			case "Timeline":
 				// Check the session cookie to see if user is authenticated and session is valid
-				respCookie := checkCookie(r)
+				respCookie := CheckCookie(r)
 				if respCookie.Status == false {
 					save(w, &respCookie)
 				}
@@ -53,56 +52,11 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 				res := timelineHandler(req)
 				save(w, &res)
 			case "Auth":
-				res := loginHandler(req)
-
-				if res.Status == true {
-					var session *Session
-
-					//If there is no session for that user, create one with a unique SessionID, add it to a cookie and send the cookie back 
-					sessionID, err := Store.GetSessionID(req.Data["Username"]); 
-					if err != nil {
-						//Crating session with unique sessionID and storing it
-						sessionID = Store.GenerateSessionID(req.Data["Username"])
-
-						//Check if that sessionID already exists (shit happens) and create another if so
-						_, err := Store.GetUsername(sessionID);
-						for err == nil {
-							sessionID = Store.GenerateSessionID(req.Data["Username"])
-							_, err = Store.GetUsername(sessionID);
-						}
-
-						session = &Session{req.Data["Username"], sessionID, time.Now().Unix()}
-						Store.AddSession(*session)
-					} else {
-						session = Store.GetSession(sessionID)
-						session.lastUsed = time.Now().Unix()
-					}
-
-					//Store.Print()
-
-					//Creating encoding value
-					var s = securecookie.New([]byte("dewis-hashkey-cookie"), []byte("encryption-key-dewis-hash78aw971"))
-					encoded, err := s.Encode("session", session);
-
-					//Creating and setting cookie
-					if err == nil {
-					    cookie := &http.Cookie{
-							Name:  "session",
-					    	Value: encoded,
-					    	Path:  "/",
-					    	HttpOnly: true,
-							}
-					    http.SetCookie(w, cookie)
-					} else {
-						log.Printf("ApiHandler: Something went wrong when encoding the cookie values.\n%v\n", err)
-						http.Error(w, "Oops. Something went wrong.", http.StatusInternalServerError)
-					}
-				}
-				
+				res := loginHandler(req, w, r)
 				save(w, &res)
 			case "User":
 				// Check the session cookie to see if user is authenticated and session is valid
-				respCookie := checkCookie(r)
+				respCookie := CheckCookie(r)
 				if respCookie.Status == false {
 					save(w, &respCookie)
 				}
